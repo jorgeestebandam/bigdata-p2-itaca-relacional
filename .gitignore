@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Entorno y secretos
+.env
+*.pem
+
+# Datos y salidas
+data/
+*.csv
+*.parquet
+*.log
+
+# Docker
+docker-compose.override.yml
+
+# IDE / SO
+.vscode/
+.idea/
+.DS_StoreREADME.html
+README.html
