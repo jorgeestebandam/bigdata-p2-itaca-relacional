@@ -23,3 +23,5 @@ docker-compose.override.yml
 .idea/
 .DS_StoreREADME.html
 README.html
+# Datos de la base de datos PostgreSQL
+data/postgres/
