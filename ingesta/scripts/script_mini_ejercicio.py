@@ -44,7 +44,7 @@ def guardar_fecha_ingesta() -> None:
 
 
 def obtener_calificaciones(conexion, anyo_ultima_ejecucion):
-    query = f"SELECT * FROM calificaciones WHERE anyo >= '{anyo_ultima_ejecucion}'"
+    query = f"SELECT * FROM calificaciones WHERE anyo > '{anyo_ultima_ejecucion}'"
     try:
         res = pd.read_sql_query(query, conexion)
     except Exception as e:
@@ -57,8 +57,8 @@ def guardar_calificaciones_csv(calificaciones):
         print("No hay calificaciones para guardar.")
         return
 
-    ruta = "data/raw/calificaciones.csv"
-    os.makedirs("data/raw", exist_ok=True)
+    ruta = "data/raw/mini_ejercicio/calificaciones.csv"
+    os.makedirs("data/raw/mini_ejercicio", exist_ok=True)
     existe = os.path.exists(ruta)
 
     calificaciones.to_csv(ruta, mode="a", header=not existe, index=False)
