@@ -18,11 +18,11 @@ El script solo realiza **consultas de lectura** (`SELECT`). No modifica ni borra
 
 | Tabla | Datos |
 |---|---|
-| `alumnos` |`Anyo`, `NIA`, `Curso`, `Turno`, `Grupo` |
-| `calificaciones` | `Anyo`, `NIA`, `Curso`, `Modulo`, `Nota`, `Evaluacion` |
-| `contenidos` | `Anyo`, `Curso`, `Modulo`, `Nombre_Modulo` |
-| `cursos` | `Anyo`, `Curso`, `Nombre_Curso`, `Nombre_Curso_Val`, `Abreviatura`, `Padre` |
-| `grupos` | `Anyo`, `Grupo`, `Nombre_Grupo`, `Turno`, `Modalidad`, `Capacidad`  |
+| `alumnos` | `Anyo`, `NIA`, `sexo`, `nacionalidad`, `provincia`, `municipio`, `ensenanza`, `curso`, `grupo`, `turno`, `linea`, `modalidad`, `repite`, `estado_matricula`, `tipo_matricula`, `fecha_matricula`, `fecha_ingreso_centro` |
+| `calificaciones` | `Anyo`, `evaluacion`, `alumno`, `ensenanza`, `curso`, `contenido`, `bloque_contenido`, `nota_numerica`, `tipo_nota` |
+| `contenidos` | `Anyo`, `codigo`, `nombre_cas`, `nombre_val`, `ensenanza`, `curso` |
+| `cursos` | `Anyo`, `codigo`, `nombre_cas`, `nombre_val`, `abreviatura`, `ensenanza`, `padre` |
+| `grupos` | `Anyo`, `Grupo`, `Nombre_Grupo`, `Turno`, `Modalidad`, `Capacidad` |
 
 Todas las tablas tienen una columna `anyo`, que se usa para decidir qué datos se importan.
 
@@ -81,7 +81,8 @@ Las rutas (`data/raw`, `data/control`) son relativas, por lo que el script debe 
 |---|---|
 | `conexionBD` | Abre la conexión con PostgreSQL |
 | `obtener_ultima_ejecucion` | Lee el año de la última ingesta (por defecto `2020`) |
-| `extraer_tabla` | Consulta una tabla filtrando por `anyo` |
+| `extraer_campos` | Devuelve las columnas de una tabla definidas en `VARIABLES` como cadena para el `SELECT`. Si la tabla no existe o no tiene campos, devuelve `None` |
+| `extraer_tabla` | Consulta una tabla con las columnas de `extraer_campos`, filtrando por `anyo` |
 | `eliminar_anyos` | Descarta del `.jsonl` las filas con `anyo >= ultima_ejecucion` y devuelve las anteriores |
 | `guardar_tabla` | Reescribe el `.jsonl` con las filas históricas y las nuevas |
 | `anonimizar_nia` | Sustituye el NIA por un identificador anónimo |

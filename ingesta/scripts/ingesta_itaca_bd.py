@@ -15,10 +15,29 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("ingesta_itaca_bd")
 
 
-TABLAS = ["alumnos", "calificaciones", "contenidos", "cursos", "grupos"]
+TABLAS = ["alumnos", "calificaciones", "contenidos", "cursos"]
 COLUMNAS_NIA = ["nia", "alumno"]
 MAPA_NIA = {}
 
+VARIABLES = {
+    "ALUMNOS": [
+        "anyo", "nia", "sexo", "nacionalidad", "provincia", "municipio",
+        "ensenanza", "curso", "grupo", "turno", "linea", "modalidad",
+        "repite", "estado_matricula", "tipo_matricula", "fecha_matricula",
+        "fecha_ingreso_centro",
+    ],
+    "CONTENIDOS": [
+        "anyo", "codigo", "nombre_cas", "nombre_val", "ensenanza", "curso",
+    ],
+    "CALIFICACIONES": [
+        "anyo", "evaluacion", "alumno", "ensenanza", "curso", "contenido",
+        "bloque_contenido", "nota_numerica", "tipo_nota",
+    ],
+    "CURSOS": [
+        "anyo", "codigo", "nombre_cas", "nombre_val", "abreviatura",
+        "ensenanza", "padre",
+    ],
+}
 
 def conexionBD():
     try:
@@ -50,9 +69,19 @@ def obtener_ultima_ejecucion():
         anyo = "2020"
     return anyo
 
-
+def extraer_campos(tabla: str):
+    campos = VARIABLES.get(tabla.upper())
+    if not campos: 
+        logger.info(f"No hay variables definidas para la tabla {tabla}")
+        return None
+    
+    return ", ".join(campos)
+    
 def extraer_tabla(conexion, ultima_ejecucion: str, tabla: str):
-    query = f"SELECT * FROM {tabla} WHERE anyo >= '{ultima_ejecucion}'"
+    variables = extraer_campos(tabla)
+    if variables is None:
+        return None
+    query = f"SELECT {variables} FROM {tabla} WHERE anyo >= '{ultima_ejecucion}'"
     try:
         res = pd.read_sql_query(query, conexion)
     except Exception as e:
